@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-21",
+  "recommendation": {
+    "recommended_city": "단양",
+    "weather": "늦가을, 낮 12도 안팎으로 선선함",
+    "events": [
+      "단양 온달문화축제",
+      "도담삼봉 야경"
+    ],
+    "reason": "단풍이 늦게까지 남는 시기입니다. 강을 따라 걷기 좋고 붐비지 않습니다."
+  },
+  "restaurants": [
+    {
+      "name": "맛집1호",
+      "address": "충북 단양군 단양읍 1길",
+      "category": "음식점 > 한식",
+      "url": "http://place.map.kakao.com/1001",
+      "x": 128.361,
+      "y": 36.981
+    },
+    {
+      "name": "맛집2호",
+      "address": "충북 단양군 단양읍 2길",
+      "category": "음식점 > 한식",
+      "url": "http://place.map.kakao.com/1002",
+      "x": 128.362,
+      "y": 36.982
+    },
+    {
+      "name": "맛집3호",
+      "address": "충북 단양군 단양읍 3길",
+      "category": "음식점 > 한식",
+      "url": "http://place.map.kakao.com/1003",
+      "x": 128.363,
+      "y": 36.983
+    },
+    {
+      "name": "맛집4호",
+      "address": "충북 단양군 단양읍 4길",
+      "category": "음식점 > 한식",
+      "url": "http://place.map.kakao.com/1004",
+      "x": 128.364,
+      "y": 36.984
+    },
+    {
+      "name": "맛집5호",
+      "address": "충북 단양군 단양읍 5길",
+      "category": "음식점 > 한식",
+      "url": "http://place.map.kakao.com/1005",
+      "x": 128.365,
+      "y": 36.985
+    }
+  ],
+  "errors": [
+    {
+      "step": "report",
+      "type": "PARSE_ERROR",
+      "message": "리포트 JSON을 읽지 못했습니다"
+    }
+  ]
+}
