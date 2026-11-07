@@ -1,0 +1,13 @@
+# 비밀 정보
+.env
+.env.*
+!.env.example
+
+# 실행 결과
+results/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/

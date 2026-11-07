@@ -1,0 +1,252 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "date": "2026-10-10",
+    "generated_at": "2026-11-07T17:26:36",
+    "llm": "mock-llm",
+    "places": "mock-places",
+    "mock": "all",
+    "num_cities": 3,
+    "places_per_city": 5
+  },
+  "recommendation": {
+    "recommended_city": "경주",
+    "weather": "평균 15~20°C, 맑고 건조함",
+    "events": [
+      "신라문화제(일정 변동 가능)"
+    ],
+    "reason": "청명한 가을 하늘 아래 유적지를 둘러보기 좋습니다. 단풍이 물들기 시작합니다.",
+    "recommended_cities": [
+      {
+        "city": "경주",
+        "weather": "평균 15~20°C, 맑고 건조함",
+        "events": [
+          "신라문화제(일정 변동 가능)"
+        ],
+        "reason": "청명한 가을 하늘 아래 유적지를 둘러보기 좋습니다. 단풍이 물들기 시작합니다."
+      },
+      {
+        "city": "진주",
+        "weather": "선선한 가을 날씨",
+        "events": [
+          "진주 남강유등축제(일정 변동 가능)"
+        ],
+        "reason": "야간 유등 축제가 장관입니다."
+      },
+      {
+        "city": "속초",
+        "weather": "일교차가 크고 단풍 절정",
+        "events": [
+          "설악산 단풍 산행"
+        ],
+        "reason": "단풍이 가장 먼저 물드는 곳입니다."
+      }
+    ]
+  },
+  "restaurants": [
+    {
+      "city": "경주",
+      "query": "경주 맛집",
+      "status": "ok",
+      "items": [
+        {
+          "name": "[예시] 경주 한상",
+          "address": "경주 예시로 1길 10",
+          "category": "한식",
+          "category_full": "음식점 > 한식",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": 129.2247,
+          "y": 35.8562,
+          "lat": 35.8562,
+          "lng": 129.2247
+        },
+        {
+          "name": "[예시] 경주 바다",
+          "address": "경주 예시로 2길 11",
+          "category": "해물,생선",
+          "category_full": "음식점 > 해물,생선",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": 129.2267,
+          "y": 35.8582,
+          "lat": 35.8582,
+          "lng": 129.2267
+        },
+        {
+          "name": "[예시] 경주 면옥",
+          "address": "경주 예시로 3길 12",
+          "category": "국수",
+          "category_full": "음식점 > 국수",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": 129.2287,
+          "y": 35.8602,
+          "lat": 35.8602,
+          "lng": 129.2287
+        },
+        {
+          "name": "[예시] 경주 다방",
+          "address": "경주 예시로 4길 13",
+          "category": "카페",
+          "category_full": "음식점 > 카페",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": 129.2307,
+          "y": 35.8622,
+          "lat": 35.8622,
+          "lng": 129.2307
+        },
+        {
+          "name": "[예시] 경주 숯불",
+          "address": "경주 예시로 5길 14",
+          "category": "고기,구이",
+          "category_full": "음식점 > 고기,구이",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": 129.2327,
+          "y": 35.8642,
+          "lat": 35.8642,
+          "lng": 129.2327
+        }
+      ]
+    },
+    {
+      "city": "진주",
+      "query": "진주 맛집",
+      "status": "ok",
+      "items": [
+        {
+          "name": "[예시] 진주 한상",
+          "address": "진주 예시로 1길 10",
+          "category": "한식",
+          "category_full": "음식점 > 한식",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": null,
+          "y": null,
+          "lat": null,
+          "lng": null
+        },
+        {
+          "name": "[예시] 진주 바다",
+          "address": "진주 예시로 2길 11",
+          "category": "해물,생선",
+          "category_full": "음식점 > 해물,생선",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": null,
+          "y": null,
+          "lat": null,
+          "lng": null
+        },
+        {
+          "name": "[예시] 진주 면옥",
+          "address": "진주 예시로 3길 12",
+          "category": "국수",
+          "category_full": "음식점 > 국수",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": null,
+          "y": null,
+          "lat": null,
+          "lng": null
+        },
+        {
+          "name": "[예시] 진주 다방",
+          "address": "진주 예시로 4길 13",
+          "category": "카페",
+          "category_full": "음식점 > 카페",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": null,
+          "y": null,
+          "lat": null,
+          "lng": null
+        },
+        {
+          "name": "[예시] 진주 숯불",
+          "address": "진주 예시로 5길 14",
+          "category": "고기,구이",
+          "category_full": "음식점 > 고기,구이",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91",
+          "x": null,
+          "y": null,
+          "lat": null,
+          "lng": null
+        }
+      ]
+    },
+    {
+      "city": "속초",
+      "query": "속초 맛집",
+      "status": "ok",
+      "items": [
+        {
+          "name": "[예시] 속초 한상",
+          "address": "속초 예시로 1길 10",
+          "category": "한식",
+          "category_full": "음식점 > 한식",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91",
+          "x": 128.5918,
+          "y": 38.207,
+          "lat": 38.207,
+          "lng": 128.5918
+        },
+        {
+          "name": "[예시] 속초 바다",
+          "address": "속초 예시로 2길 11",
+          "category": "해물,생선",
+          "category_full": "음식점 > 해물,생선",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91",
+          "x": 128.5938,
+          "y": 38.209,
+          "lat": 38.209,
+          "lng": 128.5938
+        },
+        {
+          "name": "[예시] 속초 면옥",
+          "address": "속초 예시로 3길 12",
+          "category": "국수",
+          "category_full": "음식점 > 국수",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91",
+          "x": 128.5958,
+          "y": 38.211,
+          "lat": 38.211,
+          "lng": 128.5958
+        },
+        {
+          "name": "[예시] 속초 다방",
+          "address": "속초 예시로 4길 13",
+          "category": "카페",
+          "category_full": "음식점 > 카페",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91",
+          "x": 128.5978,
+          "y": 38.213,
+          "lat": 38.213,
+          "lng": 128.5978
+        },
+        {
+          "name": "[예시] 속초 숯불",
+          "address": "속초 예시로 5길 14",
+          "category": "고기,구이",
+          "category_full": "음식점 > 고기,구이",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91",
+          "x": 128.5998,
+          "y": 38.215,
+          "lat": 38.215,
+          "lng": 128.5998
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "report_markdown": "# 2026-10-10 국내 여행 추천 리포트\n\n## 추천 지역\n\n- **경주**\n- **진주**\n- **속초**\n\n## 추천 이유\n\n### 경주\n\n청명한 가을 하늘 아래 유적지를 둘러보기 좋습니다. 단풍이 물들기 시작합니다.\n\n### 진주\n\n야간 유등 축제가 장관입니다.\n\n### 속초\n\n단풍이 가장 먼저 물드는 곳입니다.\n\n## 날씨 요약\n\n### 경주\n\n평균 15~20°C, 맑고 건조함\n\n### 진주\n\n선선한 가을 날씨\n\n### 속초\n\n일교차가 크고 단풍 절정\n\n## 행사/축제\n\n### 경주\n\n- 신라문화제(일정 변동 가능)\n\n### 진주\n\n- 진주 남강유등축제(일정 변동 가능)\n\n### 속초\n\n- 설악산 단풍 산행\n\n## 맛집 추천\n\n### 경주\n\n- **[예시] 경주 한상** (한식) - 경주 예시로 1길 10 - [지도](https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n- **[예시] 경주 바다** (해물,생선) - 경주 예시로 2길 11 - [지도](https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n- **[예시] 경주 면옥** (국수) - 경주 예시로 3길 12 - [지도](https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n- **[예시] 경주 다방** (카페) - 경주 예시로 4길 13 - [지도](https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n- **[예시] 경주 숯불** (고기,구이) - 경주 예시로 5길 14 - [지도](https://map.kakao.com/?q=%EA%B2%BD%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n\n### 진주\n\n- **[예시] 진주 한상** (한식) - 진주 예시로 1길 10 - [지도](https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n- **[예시] 진주 바다** (해물,생선) - 진주 예시로 2길 11 - [지도](https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n- **[예시] 진주 면옥** (국수) - 진주 예시로 3길 12 - [지도](https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n- **[예시] 진주 다방** (카페) - 진주 예시로 4길 13 - [지도](https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n- **[예시] 진주 숯불** (고기,구이) - 진주 예시로 5길 14 - [지도](https://map.kakao.com/?q=%EC%A7%84%EC%A3%BC%20%EB%A7%9B%EC%A7%91)\n\n### 속초\n\n- **[예시] 속초 한상** (한식) - 속초 예시로 1길 10 - [지도](https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91)\n- **[예시] 속초 바다** (해물,생선) - 속초 예시로 2길 11 - [지도](https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91)\n- **[예시] 속초 면옥** (국수) - 속초 예시로 3길 12 - [지도](https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91)\n- **[예시] 속초 다방** (카페) - 속초 예시로 4길 13 - [지도](https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91)\n- **[예시] 속초 숯불** (고기,구이) - 속초 예시로 5길 14 - [지도](https://map.kakao.com/?q=%EC%86%8D%EC%B4%88%20%EB%A7%9B%EC%A7%91)\n\n## 1일 일정 제안\n\n### 경주\n\n- **오전**: 경주 대표 명소 산책으로 하루 시작\n- **오후**: **[예시] 경주 한상**에서 점심 후 신라문화제(일정 변동 가능) 둘러보기\n- **저녁**: **[예시] 경주 바다**에서 저녁 식사, 야경 감상 후 휴식\n\n### 진주\n\n- **오전**: 진주 대표 명소 산책으로 하루 시작\n- **오후**: **[예시] 진주 한상**에서 점심 후 진주 남강유등축제(일정 변동 가능) 둘러보기\n- **저녁**: **[예시] 진주 바다**에서 저녁 식사, 야경 감상 후 휴식\n\n### 속초\n\n- **오전**: 속초 대표 명소 산책으로 하루 시작\n- **오후**: **[예시] 속초 한상**에서 점심 후 설악산 단풍 산행 둘러보기\n- **저녁**: **[예시] 속초 바다**에서 저녁 식사, 야경 감상 후 휴식\n",
+  "report_source": "llm"
+}

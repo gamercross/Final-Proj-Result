@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>국내 여행 추천</title>
+<style>
+  body { font-family: sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+  .error { color: #b00020; }
+  li { margin: .3rem 0; }
+</style>
+</head>
+<body>
+<h1>국내 여행 추천</h1>
+<form id="f">
+  <label>여행 날짜 <input type="date" id="date"></label>
+  <button type="submit">리포트 만들기</button>
+</form>
+<p id="msg"></p>
+<div id="report"></div>
+<script>
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+document.getElementById('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = document.getElementById('msg'), out = document.getElementById('report');
+  const date = document.getElementById('date').value;
+  out.innerHTML = '';
+  if (!date) { msg.className = 'error'; msg.textContent = '여행 날짜를 넣어 주세요.'; return; }
+  msg.className = ''; msg.textContent = '만드는 중…';
+  try {
+    const r = await fetch('/api/report', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({date})});
+    const d = await r.json();
+    if (!r.ok) { msg.className = 'error'; msg.textContent = d.error; return; }
+    msg.textContent = '';
+    const food = d.restaurants.length
+      ? d.restaurants.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a> — ${esc(x.category)} · ${esc(x.address)} ${esc(x.phone)}</li>`).join('')
+      : '<li>맛집을 찾지 못했어요.</li>';
+    out.innerHTML = `<h2>${esc(d.date)} 여행 리포트 — ${esc(d.region)}</h2>
+      <h3>추천 지역</h3><p><b>${esc(d.region)}</b> — ${esc(d.reason)}</p>
+      <h3>맛집</h3><ul>${food}</ul>
+      <h3>1일 일정</h3><ul>${d.itinerary.map(x => `<li>${esc(x.time)} ${esc(x.plan)}</li>`).join('')}</ul>`;
+  } catch (err) { msg.className = 'error'; msg.textContent = '서버에 닿지 못했어요.'; }
+});
+</script>
+</body>
+</html>

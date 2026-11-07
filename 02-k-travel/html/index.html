@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Travel Planner</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1f2933; --muted: #5f6b7a;
+    --line: #d9dee5; --accent: #2f5d8a; --warn-bg: #fff6db; --warn-line: #e6c65c;
+    --term-bg: #1e2430; --term-text: #e3e8ef; --err: #b42318; --ok: #1a7f37;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 { font-size: 1.1rem; margin: 0 0 12px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .sim { background: var(--warn-bg); border-color: var(--warn-line); }
+  .badge { display: inline-block; font-size: .78rem; font-weight: 600; padding: 1px 8px; border-radius: 10px;
+    background: var(--warn-line); color: #4a3a00; margin-left: 6px; vertical-align: middle; }
+  label { display: block; font-weight: 600; margin: 10px 0 4px; }
+  .hint { color: var(--muted); font-size: .86rem; font-weight: normal; }
+  input[type=text], select, textarea { width: 100%; font: inherit; padding: 6px 8px; border: 1px solid var(--line);
+    border-radius: 6px; background: #fff; color: var(--text); }
+  textarea { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .85rem; min-height: 150px; }
+  .check { font-weight: normal; display: flex; gap: 8px; align-items: center; margin: 4px 0; }
+  .cmd { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .cmd input { width: 160px; flex: 0 0 auto; }
+  button { font: inherit; padding: 7px 16px; border-radius: 6px; border: 1px solid var(--accent);
+    background: var(--accent); color: #fff; cursor: pointer; }
+  button.secondary { background: #fff; color: var(--accent); }
+  pre { margin: 0; white-space: pre-wrap; word-break: break-word; }
+  .term { background: var(--term-bg); color: var(--term-text); border-radius: 6px; padding: 12px;
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .86rem; min-height: 60px; }
+  .file { border: 1px solid var(--line); border-radius: 6px; margin-top: 12px; }
+  .file header { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 8px 12px; border-bottom: 1px solid var(--line); background: #f0f3f7; font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .file pre { padding: 12px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .85rem; max-height: 420px; overflow: auto; }
+  .none { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Travel Planner 🌍</h1>
+  <p class="sub">국내 여행 추천 프로그램 — 날짜를 넣으면 추천 지역(LLM) → 맛집 검색(지도 API) → 최종 리포트(LLM) 순서로 만듭니다.</p>
+
+  <section>
+    <h2>실행</h2>
+    <div class="cmd">
+      <span>python travel_planner.py -date</span>
+      <input type="text" id="date" value="2024-03-15" placeholder="YYYY-MM-DD" aria-label="여행 날짜 (YYYY-MM-DD)">
+      <button id="run">실행</button>
+    </div>
+    <p class="hint">여행 날짜 (YYYY-MM-DD)</p>
+  </section>
+
+  <section class="sim">
+    <h2>시뮬레이션 설정 <span class="badge">시뮬레이션</span></h2>
+    <p class="hint" style="margin-top:0">이 페이지는 브라우저 안에서만 돌아갑니다. Google Gemini API와 Kakao Local API를 실제로 부르지 않고, 아래에서 정한 응답으로 흉내 냅니다. API 키 값은 받지 않습니다.</p>
+
+    <label>환경변수</label>
+    <label class="check"><input type="checkbox" id="hasGemini" checked> GEMINI_API_KEY 설정됨</label>
+    <label class="check"><input type="checkbox" id="hasKakao" checked> KAKAO_API_KEY 설정됨</label>
+
+    <label for="recMode">[1/3] 1차 추천(Gemini) 응답</label>
+    <select id="recMode">
+      <option value="ok">정상 응답 (아래 글을 응답으로 사용)</option>
+      <option value="fail1">첫 시도 API 오류 → 재시도는 정상</option>
+      <option value="fail2">두 번 모두 API 오류</option>
+    </select>
+    <label for="recText">Gemini 응답 글 <span class="hint">— 프로그램이 JSON으로 풀어 읽습니다. JSON이 아니면 JSON_PARSE_ERROR가 납니다.</span></label>
+    <textarea id="recText" spellcheck="false"></textarea>
+
+    <label for="kakaoMode">[2/3] 맛집 검색(Kakao) 응답</label>
+    <select id="kakaoMode">
+      <option value="ok">정상 — 5곳 (이름 · 주소는 예시)</option>
+      <option value="empty">결과 0건 (EMPTY_RESULT)</option>
+      <option value="401">HTTP 401 (AUTH_ERROR)</option>
+      <option value="403">HTTP 403 (AUTH_ERROR)</option>
+      <option value="network">네트워크 오류 (NETWORK_ERROR)</option>
+    </select>
+
+    <label for="reportMode">[3/3] 최종 리포트(Gemini) 응답</label>
+    <select id="reportMode">
+      <option value="ok">정상 응답 (정해진 틀로 만든 예시 리포트)</option>
+      <option value="fail">API 오류 (원본 코드는 이 오류를 처리하지 않아 프로그램이 멈춤)</option>
+    </select>
+  </section>
+
+  <section>
+    <h2>터미널 출력</h2>
+    <div class="term"><pre id="out"><span class="none">실행을 누르면 출력이 여기에 나옵니다.</span></pre></div>
+  </section>
+
+  <section>
+    <h2>results/ 폴더 <span class="badge">파일은 내려받기로 대신함</span></h2>
+    <div id="files"><p class="none">아직 만든 파일이 없습니다.</p></div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var SAMPLE_REC = JSON.stringify({
+    recommended_city: "제주",
+    weather: "(시뮬레이션 예시) 봄 날씨, 낮에는 따뜻하고 아침저녁은 쌀쌀함",
+    events: ["(예시) 유채꽃 축제", "(예시) 들불 축제"],
+    reason: "(시뮬레이션 예시) 이 글은 실제 Gemini 응답이 아닙니다. 자유롭게 고쳐서 실행해 보세요."
+  }, null, 4);
+
+  var $ = function (id) { return document.getElementById(id); };
+  $("recText").value = SAMPLE_REC;
+
+  // 결과 폴더(results/)를 흉내 내는 메모리 속 저장소
+  var results = {};
+
+  function print(line) { output.push(line); }
+  var output = [];
+
+  function ExitError(code) { this.code = code; }
+
+  // Python datetime.strptime(s, "%Y-%m-%d") 과 같은 규칙
+  function parseDate(s) {
+    var m = /^(\d{4})-(1[0-2]|0[1-9]|[1-9])-(3[01]|[12]\d|0[1-9]|[1-9]| [1-9])$/.exec(s);
+    if (!m) return null;
+    var y = +m[1], mo = +m[2], d = +m[3];
+    if (y < 1) return null;
+    var dim = [31, (y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][mo - 1];
+    if (d > dim) return null;
+    return { y: y, m: mo, d: d };
+  }
+
+  // src/config.py get_api_keys()
+  function getApiKeys() {
+    if (!$("hasGemini").checked) {
+      print("❌ GEMINI_API_KEY 환경변수가 설정되지 않았습니다.");
+      print("설정 방법: export GEMINI_API_KEY='your_key'");
+      throw new ExitError(1);
+    }
+    if (!$("hasKakao").checked) {
+      print("❌ KAKAO_API_KEY 환경변수가 설정되지 않았습니다.");
+      print("설정 방법: export KAKAO_API_KEY='your_key'");
+      throw new ExitError(1);
+    }
+    return ["(시뮬레이션)", "(시뮬레이션)"];
+  }
+
+  // src/gemini_client.py GeminiClient (시뮬레이션)
+  function GeminiClient() { this.attempt = 0; }
+
+  GeminiClient.prototype.get_travel_recommendation = function (dateStr) {
+    this.attempt += 1;
+    var mode = $("recMode").value;
+    if (mode === "fail2" || (mode === "fail1" && this.attempt === 1)) {
+      return [null, { step: "recommendation", type: "API_ERROR", message: "(시뮬레이션) Gemini API 호출 실패" }];
+    }
+    var jsonStr = $("recText").value.trim();
+    if (jsonStr.indexOf("```") === 0) {
+      // 원본: json_str.split("```")[1].replace("json", "").strip()
+      jsonStr = jsonStr.split("```")[1].split("json").join("").trim();
+    }
+    try {
+      return [JSON.parse(jsonStr), null];
+    } catch (e) {
+      return [null, { step: "recommendation", type: "JSON_PARSE_ERROR", message: String(e.message) }];
+    }
+  };
+
+  function key(obj, k) {
+    if (obj === null || typeof obj !== "object" || Array.isArray(obj) || !(k in obj)) {
+      throw new Error("KeyError: '" + k + "'");
+    }
+    return obj[k];
+  }
+  function joinEvents(ev) {
+    // 원본: ', '.join(recommendation['events'])
+    var arr = Array.isArray(ev) ? ev : (typeof ev === "string" ? Array.from(ev) : null);
+    if (!arr) throw new Error("TypeError: can only join an iterable");
+    return arr.map(String).join(", ");
+  }
+
+  GeminiClient.prototype.generate_report = function (rec, restaurants) {
+    var restaurantsText;
+    if (restaurants && restaurants.length) {
+      restaurantsText = restaurants.map(function (r) { return "- " + r.name + " (" + r.address + ")"; }).join("\n");
+    } else {
+      restaurantsText = "- 데이터 없음";
+    }
+    var city = key(rec, "recommended_city");
+    var reason = key(rec, "reason");
+    var weather = key(rec, "weather");
+    var events = joinEvents(key(rec, "events"));
+    if ($("reportMode").value === "fail") {
+      throw new Error("(시뮬레이션) Gemini API 호출 실패 — 리포트 생성 중 처리되지 않은 예외");
+    }
+    // 실제로는 Gemini가 쓰는 글. 여기서는 원본 프롬프트의 요구(제목 · 소제목 · bullet list · 1일 일정 오전/오후/저녁)를 따른 고정 틀.
+    var first = restaurants && restaurants.length ? restaurants[0].name : "데이터 없음";
+    return [
+      "# " + city + " 여행 리포트",
+      "",
+      "> 시뮬레이션으로 만든 리포트입니다. 실제 Gemini 응답이 아닙니다.",
+      "",
+      "## 추천 이유",
+      "- " + reason,
+      "",
+      "## 날씨",
+      "- " + weather,
+      "",
+      "## 행사",
+      "- " + (events || "없음"),
+      "",
+      "## 맛집",
+      restaurantsText,
+      "",
+      "## 1일 일정",
+      "### 오전",
+      "- " + city + " 둘러보기 (예시)",
+      "### 오후",
+      "- 행사 방문: " + (events || "없음"),
+      "### 저녁",
+      "- 저녁 식사: " + first,
+      ""
+    ].join("\n");
+  };
+
+  // src/kakao_client.py KakaoClient.search_restaurants (시뮬레이션)
+  function searchRestaurants(city, query, limit) {
+    query = query || "맛집"; limit = limit || 5;
+    var mode = $("kakaoMode").value;
+    if (mode === "401") return [null, { step: "place_search", type: "AUTH_ERROR", message: "HTTP 401" }];
+    if (mode === "403") return [null, { step: "place_search", type: "AUTH_ERROR", message: "HTTP 403" }];
+    if (mode === "network") return [null, { step: "place_search", type: "NETWORK_ERROR", message: "(시뮬레이션) 연결 시간 초과(timeout=10)" }];
+    if (mode === "empty") return [[], { step: "place_search", type: "EMPTY_RESULT", message: "0 results for " + city }];
+    var list = [];
+    for (var i = 1; i <= limit; i++) {
+      list.push({
+        name: "(예시) " + city + " " + query + " " + i,
+        address: "(예시 주소) " + city,
+        category: "음식점",
+        url: "",
+        x: 0.0,
+        y: 0.0
+      });
+    }
+    return [list, null];
+  }
+
+  function main(dateArg) {
+    // 날짜 검증
+    if (!parseDate(dateArg)) {
+      print("❌ 날짜 형식이 올바르지 않습니다. (YYYY-MM-DD)");
+      throw new ExitError(1);
+    }
+    getApiKeys();
+    var errors = [];
+
+    print("[1/3] 1차 추천 생성 중(LLM)...");
+    var gemini = new GeminiClient();
+    var r = gemini.get_travel_recommendation(dateArg);
+    var recommendation = r[0], err = r[1];
+    if (err) {
+      errors.push(err);
+      print("❌ 추천 생성 실패. 재시도 중...");
+      r = gemini.get_travel_recommendation(dateArg);
+      recommendation = r[0]; err = r[1];
+      if (err) {
+        print("❌ 추천 생성 최종 실패");
+        throw new ExitError(1);
+      }
+    }
+    print("  - 추천 지역: " + key(recommendation, "recommended_city"));
+
+    print("[2/3] 맛집 검색 중(지도 API)...");
+    var k = searchRestaurants(recommendation.recommended_city);
+    var restaurants = k[0];
+    err = k[1];
+    if (err) {
+      errors.push(err);
+      print("  - 경고: " + err.message);
+      restaurants = [];
+    } else {
+      print("  - 맛집 " + restaurants.length + "곳 검색 완료");
+    }
+
+    print("[3/3] 최종 리포트 생성 중(LLM)...");
+    var report = gemini.generate_report(recommendation, restaurants);
+
+    var jsonPath = "results/" + dateArg + "_data.json";
+    results[jsonPath] = JSON.stringify({
+      date: dateArg, recommendation: recommendation, restaurants: restaurants, errors: errors
+    }, null, 2);
+    var mdPath = "results/" + dateArg + "_travel_plan.md";
+    results[mdPath] = report;
+
+    print("");
+    print("✅ 완료!");
+    print("  - JSON: " + jsonPath);
+    print("  - 리포트: " + mdPath);
+  }
+
+  function renderFiles() {
+    var box = $("files");
+    box.innerHTML = "";
+    var names = Object.keys(results).sort();
+    if (!names.length) {
+      box.innerHTML = '<p class="none">아직 만든 파일이 없습니다.</p>';
+      return;
+    }
+    names.forEach(function (name) {
+      var wrap = document.createElement("div");
+      wrap.className = "file";
+      var head = document.createElement("header");
+      var title = document.createElement("span");
+      title.textContent = name;
+      var btn = document.createElement("button");
+      btn.className = "secondary";
+      btn.textContent = "내려받기";
+      btn.addEventListener("click", function () {
+        var type = /\.json$/.test(name) ? "application/json" : "text/markdown";
+        var url = URL.createObjectURL(new Blob([results[name]], { type: type + ";charset=utf-8" }));
+        var a = document.createElement("a");
+        a.href = url; a.download = name.replace(/^results\//, "");
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      });
+      head.appendChild(title); head.appendChild(btn);
+      var pre = document.createElement("pre");
+      pre.textContent = results[name];
+      wrap.appendChild(head); wrap.appendChild(pre);
+      box.appendChild(wrap);
+    });
+  }
+
+  $("run").addEventListener("click", function () {
+    output = [];
+    print("$ python travel_planner.py -date \"" + $("date").value + "\"");
+    try {
+      main($("date").value);
+    } catch (e) {
+      if (e instanceof ExitError) {
+        print("(종료 코드 " + e.code + ")");
+      } else {
+        print("Traceback (시뮬레이션): " + e.message);
+        print("(처리되지 않은 예외로 중단 — 파일을 저장하지 않음)");
+      }
+    }
+    $("out").textContent = output.join("\n");
+    renderFiles();
+  });
+})();
+</script>
+</body>
+</html>
