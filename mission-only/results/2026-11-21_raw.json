@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "date": "2026-11-21",
+    "generated_at": "2026-11-07T17:27:27",
+    "llm": "mock-llm",
+    "places": "mock-places",
+    "mock": "all",
+    "num_cities": 1,
+    "places_per_city": 5
+  },
+  "recommendation": {
+    "recommended_city": "정읍",
+    "weather": "평균 8~15°C, 일교차가 큼",
+    "events": [
+      "내장산 단풍 시즌(일정 변동 가능)"
+    ],
+    "reason": "내장산 단풍이 절정을 맞는 시기입니다. 늦가을 정취를 느끼기 좋습니다.",
+    "recommended_cities": [
+      {
+        "city": "정읍",
+        "weather": "평균 8~15°C, 일교차가 큼",
+        "events": [
+          "내장산 단풍 시즌(일정 변동 가능)"
+        ],
+        "reason": "내장산 단풍이 절정을 맞는 시기입니다. 늦가을 정취를 느끼기 좋습니다."
+      }
+    ]
+  },
+  "restaurants": [
+    {
+      "city": "정읍",
+      "query": "정읍 맛집",
+      "status": "ok",
+      "items": [
+        {
+          "name": "[예시] 정읍 한상",
+          "address": "정읍 예시로 1길 10",
+          "category": "한식",
+          "category_full": "음식점 > 한식",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91",
+          "x": 126.8559,
+          "y": 35.5699,
+          "lat": 35.5699,
+          "lng": 126.8559
+        },
+        {
+          "name": "[예시] 정읍 바다",
+          "address": "정읍 예시로 2길 11",
+          "category": "해물,생선",
+          "category_full": "음식점 > 해물,생선",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91",
+          "x": 126.8579,
+          "y": 35.5719,
+          "lat": 35.5719,
+          "lng": 126.8579
+        },
+        {
+          "name": "[예시] 정읍 면옥",
+          "address": "정읍 예시로 3길 12",
+          "category": "국수",
+          "category_full": "음식점 > 국수",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91",
+          "x": 126.8599,
+          "y": 35.5739,
+          "lat": 35.5739,
+          "lng": 126.8599
+        },
+        {
+          "name": "[예시] 정읍 다방",
+          "address": "정읍 예시로 4길 13",
+          "category": "카페",
+          "category_full": "음식점 > 카페",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91",
+          "x": 126.8619,
+          "y": 35.5759,
+          "lat": 35.5759,
+          "lng": 126.8619
+        },
+        {
+          "name": "[예시] 정읍 숯불",
+          "address": "정읍 예시로 5길 14",
+          "category": "고기,구이",
+          "category_full": "음식점 > 고기,구이",
+          "phone": "",
+          "url": "https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91",
+          "x": 126.8639,
+          "y": 35.5779,
+          "lat": 35.5779,
+          "lng": 126.8639
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "report_markdown": "# 2026-11-21 국내 여행 추천 리포트\n\n## 추천 지역\n\n- **정읍**\n\n## 추천 이유\n\n내장산 단풍이 절정을 맞는 시기입니다. 늦가을 정취를 느끼기 좋습니다.\n\n## 날씨 요약\n\n평균 8~15°C, 일교차가 큼\n\n## 행사/축제\n\n- 내장산 단풍 시즌(일정 변동 가능)\n\n## 맛집 추천\n\n- **[예시] 정읍 한상** (한식) - 정읍 예시로 1길 10 - [지도](https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91)\n- **[예시] 정읍 바다** (해물,생선) - 정읍 예시로 2길 11 - [지도](https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91)\n- **[예시] 정읍 면옥** (국수) - 정읍 예시로 3길 12 - [지도](https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91)\n- **[예시] 정읍 다방** (카페) - 정읍 예시로 4길 13 - [지도](https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91)\n- **[예시] 정읍 숯불** (고기,구이) - 정읍 예시로 5길 14 - [지도](https://map.kakao.com/?q=%EC%A0%95%EC%9D%8D%20%EB%A7%9B%EC%A7%91)\n\n## 1일 일정 제안\n\n- **오전**: 정읍 대표 명소 산책으로 하루 시작\n- **오후**: **[예시] 정읍 한상**에서 점심 후 내장산 단풍 시즌(일정 변동 가능) 둘러보기\n- **저녁**: **[예시] 정읍 바다**에서 저녁 식사, 야경 감상 후 휴식\n",
+  "report_source": "llm"
+}

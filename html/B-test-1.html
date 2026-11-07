@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>국내 여행 추천</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --text: #1f2933;
+    --muted: #5f6b7a;
+    --line: #dde2e8;
+    --accent: #2f5d8a;
+    --accent-soft: #e8f0f8;
+    --warn-bg: #fff6e0;
+    --warn-line: #e9c46a;
+    --error: #b42318;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    line-height: 1.6;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 { font-size: 1.15rem; margin: 0 0 12px; }
+  h3 { font-size: 1rem; margin: 0 0 8px; }
+  p { margin: 0 0 8px; }
+  .sub { color: var(--muted); margin-bottom: 20px; }
+  .notice {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    margin-bottom: 20px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  label { display: block; font-weight: 600; margin-bottom: 6px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  input[type="date"] {
+    font: inherit;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    min-width: 0;
+    flex: 1 1 180px;
+  }
+  button {
+    font: inherit;
+    font-weight: 600;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  button:focus-visible, input:focus-visible { outline: 3px solid #9cc0e3; outline-offset: 1px; }
+  .hint { color: var(--muted); font-size: 0.88rem; margin-top: 8px; }
+  .error { color: var(--error); font-weight: 600; margin-top: 8px; }
+  .flow { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  .flow li { padding: 6px 10px; border-radius: 6px; background: var(--accent-soft); font-size: 0.93rem; }
+  .flow li.wait { background: #f0f1f3; color: var(--muted); }
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--warn-line);
+    background: var(--warn-bg);
+    color: #7a5a00;
+    vertical-align: middle;
+    margin-left: 6px;
+  }
+  .region { font-size: 1.3rem; font-weight: 700; }
+  ul.places { padding-left: 20px; margin: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { width: 5.5em; color: var(--muted); font-weight: 600; }
+  section + section { margin-top: 18px; }
+  footer { color: var(--muted); font-size: 0.85rem; margin-top: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>국내 여행 추천</h1>
+  <p class="sub">여행 날짜만 넣으면 추천 지역, 맛집, 1일 일정이 담긴 여행 리포트를 만들어 드려요.</p>
+
+  <div class="notice" role="note">
+    <strong>시뮬레이션 화면이에요.</strong>
+    원래는 서버가 AI 서비스(지역 추천)와 지도 서비스(맛집 검색)를 불러요.
+    이 파일은 인터넷과 열쇠 없이 열리도록 두 서비스를 <em>미리 넣어 둔 예시 답</em>으로 흉내 내요.
+    맛집 이름은 실제 가게가 아니라 예시예요.
+  </div>
+
+  <div class="card">
+    <form id="dateForm" novalidate>
+      <label for="travelDate">여행 날짜</label>
+      <div class="row">
+        <input type="date" id="travelDate" name="travelDate" aria-describedby="dateHint dateError">
+        <button type="submit">여행 리포트 만들기</button>
+      </div>
+      <p class="hint" id="dateHint">받는 정보는 여행 날짜 하나뿐이에요. 다른 개인 정보는 받지 않아요.</p>
+      <p class="error" id="dateError" role="alert" hidden></p>
+    </form>
+  </div>
+
+  <div class="card" id="flowCard" hidden>
+    <h2>진행</h2>
+    <ol class="flow" id="flow"></ol>
+  </div>
+
+  <div class="card" id="report" hidden aria-live="polite"></div>
+
+  <footer>
+    밖으로 나가는 것(원래 설계): 여행 날짜와 추천 지역이 AI 서비스와 지도 서비스로 나가요.
+    이 시뮬레이션 파일은 아무 데도 보내지 않아요.
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  // ── 시뮬레이션 데이터 ─────────────────────────────────────
+  // 원래는 AI 서비스가 날짜를 보고 지역을 추천한다. 여기서는 달마다 정해 둔 답을 쓴다.
+  var SEASON_REGIONS = {
+    1:  { region: "강원 평창", reason: "눈이 많이 와서 설경과 겨울 축제를 즐기기 좋은 때예요.", spot: "대관령 일대 설경 구경" },
+    2:  { region: "제주 서귀포", reason: "육지보다 따뜻하고 동백꽃과 감귤 철이라 늦겨울에 가기 좋아요.", spot: "동백꽃 군락지 산책" },
+    3:  { region: "전남 광양", reason: "이른 봄 매화가 피어 꽃 구경하기 좋은 때예요.", spot: "매화마을 둘러보기" },
+    4:  { region: "경남 창원 진해", reason: "벚꽃이 한창이라 봄꽃 여행에 알맞아요.", spot: "여좌천 벚꽃길 걷기" },
+    5:  { region: "전남 담양", reason: "신록이 짙어져 대나무숲을 걷기 좋은 날씨예요.", spot: "죽녹원 대나무숲 산책" },
+    6:  { region: "경북 경주", reason: "장마 전 초여름이라 유적지를 걷고 야경을 보기 좋아요.", spot: "대릉원 · 첨성대 둘러보기" },
+    7:  { region: "강원 강릉", reason: "한여름 바다 물놀이와 시원한 바닷바람을 즐기기 좋아요.", spot: "경포해변 걷기" },
+    8:  { region: "부산", reason: "여름 바다와 해변 축제가 많은 때예요.", spot: "해운대 · 광안리 해변 둘러보기" },
+    9:  { region: "전북 전주", reason: "더위가 꺾여 한옥 골목을 걸어 다니기 좋은 초가을이에요.", spot: "전주 한옥마을 골목 걷기" },
+    10: { region: "강원 속초", reason: "설악산 단풍이 절정인 때예요.", spot: "설악산 단풍 구경" },
+    11: { region: "경북 안동", reason: "늦가을 정취가 깊어 옛 마을을 둘러보기 좋아요.", spot: "하회마을 둘러보기" },
+    12: { region: "전남 여수", reason: "겨울 바다 야경이 맑고 제철 해산물이 많아요.", spot: "여수 밤바다 야경 보기" }
+  };
+
+  // 원래는 지도 서비스가 지역 이름으로 맛집을 찾는다. 여기서는 지역마다 예시 맛집 3곳을 넣어 두었다.
+  var SAMPLE_PLACES = {
+    "강원 평창": [["예시 식당 가", "황태구이"], ["예시 식당 나", "메밀막국수"], ["예시 식당 다", "한우 구이"]],
+    "제주 서귀포": [["예시 식당 가", "고기국수"], ["예시 식당 나", "갈치조림"], ["예시 식당 다", "흑돼지 구이"]],
+    "전남 광양": [["예시 식당 가", "광양 불고기"], ["예시 식당 나", "재첩국"], ["예시 식당 다", "섬진강 참게탕"]],
+    "경남 창원 진해": [["예시 식당 가", "아귀찜"], ["예시 식당 나", "해물 칼국수"], ["예시 식당 다", "생선회"]],
+    "전남 담양": [["예시 식당 가", "떡갈비"], ["예시 식당 나", "대통밥"], ["예시 식당 다", "국수"]],
+    "경북 경주": [["예시 식당 가", "쌈밥 정식"], ["예시 식당 나", "한우 물회"], ["예시 식당 다", "보리빵 가게"]],
+    "강원 강릉": [["예시 식당 가", "초당순두부"], ["예시 식당 나", "장칼국수"], ["예시 식당 다", "물회"]],
+    "부산": [["예시 식당 가", "돼지국밥"], ["예시 식당 나", "밀면"], ["예시 식당 다", "어묵 · 분식"]],
+    "전북 전주": [["예시 식당 가", "비빔밥"], ["예시 식당 나", "콩나물국밥"], ["예시 식당 다", "막걸리 한상"]],
+    "강원 속초": [["예시 식당 가", "물회"], ["예시 식당 나", "오징어순대"], ["예시 식당 다", "닭강정"]],
+    "경북 안동": [["예시 식당 가", "안동찜닭"], ["예시 식당 나", "간고등어 정식"], ["예시 식당 다", "헛제삿밥"]],
+    "전남 여수": [["예시 식당 가", "게장 백반"], ["예시 식당 나", "서대회"], ["예시 식당 다", "갓김치 · 해물 한상"]]
+  };
+
+  var WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
+
+  // ── 할 일 1: 날짜 입력 확인 ───────────────────────────────
+  function parseDate(value) {
+    if (!value) return null;
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+    if (!m) return null;
+    var d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    if (isNaN(d.getTime()) || d.getMonth() !== Number(m[2]) - 1) return null;
+    return d;
+  }
+
+  // ── 할 일 2: AI에게 지역 추천 받기 (시뮬레이션) ─────────────
+  // 원래 보내는 것: 여행 날짜 하나뿐.
+  function recommendRegion(date) {
+    return SEASON_REGIONS[date.getMonth() + 1];
+  }
+
+  // ── 할 일 3: 지도 서비스로 맛집 찾기 (시뮬레이션) ───────────
+  // 원래 보내는 것: 추천 지역 이름 하나뿐.
+  function searchRestaurants(regionName) {
+    var list = SAMPLE_PLACES[regionName] || [];
+    return list.map(function (p) { return { name: p[0], food: p[1] }; });
+  }
+
+  // ── 할 일 4: 1일 일정 리포트 만들기 ─────────────────────────
+  function buildReport(date, rec, places) {
+    var lunch = places[0];
+    var dinner = places[1] || places[0];
+    return {
+      dateLabel: date.getFullYear() + "년 " + (date.getMonth() + 1) + "월 " + date.getDate() + "일(" + WEEKDAYS[date.getDay()] + ")",
+      region: rec.region,
+      reason: rec.reason,
+      places: places,
+      schedule: [
+        ["오전", rec.region + " 도착 · " + rec.spot],
+        ["점심", lunch ? lunch.name + "에서 " + lunch.food : "맛집 정보 없음"],
+        ["오후", rec.region + " 시내 · 주변 자유롭게 둘러보기"],
+        ["저녁", dinner ? dinner.name + "에서 " + dinner.food : "맛집 정보 없음"]
+      ]
+    };
+  }
+
+  // ── 할 일 5: 리포트를 화면에 보여주기 ───────────────────────
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { node.setAttribute(k, attrs[k]); });
+    (children || []).forEach(function (c) {
+      node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return node;
+  }
+
+  function simTag() { return el("span", { "class": "tag" }, ["시뮬레이션"]); }
+
+  function renderFlow(steps) {
+    var flow = document.getElementById("flow");
+    flow.textContent = "";
+    steps.forEach(function (s) {
+      flow.appendChild(el("li", s.done ? null : { "class": "wait" }, [(s.done ? "✓ " : "· ") + s.text]));
+    });
+    document.getElementById("flowCard").hidden = false;
+  }
+
+  function renderReport(r) {
+    var box = document.getElementById("report");
+    box.textContent = "";
+
+    box.appendChild(el("h2", null, [r.dateLabel + " 여행 리포트"]));
+
+    var s1 = el("section", null, [
+      el("h3", null, ["추천 지역", simTag()]),
+      el("p", { "class": "region" }, [r.region]),
+      el("p", null, [r.reason])
+    ]);
+
+    var list = el("ul", { "class": "places" });
+    r.places.forEach(function (p) {
+      list.appendChild(el("li", null, [p.name + " — " + p.food]));
+    });
+    var s2 = el("section", null, [
+      el("h3", null, ["맛집", simTag()]),
+      r.places.length ? list : el("p", null, ["찾은 맛집이 없어요."]),
+      el("p", { "class": "hint" }, ["실제 지도 서비스 결과가 아니라 예시예요. 가게 이름은 지어낸 것이에요."])
+    ]);
+
+    var table = el("table");
+    r.schedule.forEach(function (row) {
+      table.appendChild(el("tr", null, [el("th", { scope: "row" }, [row[0]]), el("td", null, [row[1]])]));
+    });
+    var s3 = el("section", null, [el("h3", null, ["1일 일정"]), table]);
+
+    box.appendChild(s1);
+    box.appendChild(s2);
+    box.appendChild(s3);
+    box.hidden = false;
+  }
+
+  // ── 흐름: ① 날짜 → ② 지역 추천 → ③ 맛집 찾기 → ④ 리포트 ─────
+  var form = document.getElementById("dateForm");
+  var input = document.getElementById("travelDate");
+  var errorBox = document.getElementById("dateError");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var date = parseDate(input.value);
+    if (!date) {
+      errorBox.textContent = input.value ? "날짜를 알아볼 수 없어요. 다시 넣어 주세요." : "여행 날짜를 넣어 주세요.";
+      errorBox.hidden = false;
+      document.getElementById("report").hidden = true;
+      document.getElementById("flowCard").hidden = true;
+      input.focus();
+      return;
+    }
+    errorBox.hidden = true;
+
+    var rec = recommendRegion(date);
+    var places = searchRestaurants(rec.region);
+    var report = buildReport(date, rec, places);
+
+    renderFlow([
+      { done: true, text: "① 여행 날짜를 받았어요" },
+      { done: true, text: "② AI가 가기 좋은 지역을 추천했어요 (시뮬레이션)" },
+      { done: places.length > 0, text: "③ 지도 서비스로 그 지역 맛집을 찾았어요 (시뮬레이션)" },
+      { done: true, text: "④ 1일 일정이 담긴 여행 리포트를 만들었어요" }
+    ]);
+    renderReport(report);
+  });
+})();
+</script>
+</body>
+</html>
