@@ -36,6 +36,8 @@
 
 **04와 05는 같은 것을 받아 같은 시험을 모두 통과했다.** 05는 Floe의 8단계 초안과 네 번의 맡기기를 거쳐 토큰을 약 2.5배(새로 읽은 것), 시간을 약 2배 더 썼고, 그 대신 **단계 문서 22개와 자기 시험 27개**가 남았다.
 
+사람이 원한 것이 명령줄 프로그램이 아니라 **웹 앱**일 때 토큰이 얼마나 들지는 재지 않았다 — 잰 조각으로 낸 추정(사람 + Floe 약 52만)과 가정으로 낸 예측(Floe 없이 약 100만)은 [estimate/](estimate/README.md)에 따로 적었다.
+
 ## 화면
 
 같은 가짜 데이터(단양 · 맛집 5곳)로 돌렸다. 04 · 05는 리포트 문장을 LLM에게 JSON으로 받는데 가짜 서버가 Markdown으로 답해, 둘 다 "가진 데이터로 만들기" 쪽으로 간 화면이다 — 그때 04는 데이터로 일정을 채우고, 05는 일정을 "데이터 없음"으로 둔다.
@@ -98,6 +100,7 @@ Floe는 받은 글 전부(미션 + 기준, 7,038자)로 1단계 초안을 만들
 | [03-test-1-run-1/](03-test-1-run-1/README.md) | test-1 첫 실행 문서로 만든 코드(`code/`) · HTML(`html/`) — 문서는 [test-1 floe-run-1](https://github.com/gamercross/test-1/tree/floe-run-1) |
 | [04-standard-claude/](04-standard-claude/README.md) | 미션 + 기준만 받은 Claude의 프로그램(`code/`), 가짜 데이터로 돌린 결과(`sample-run/`) |
 | [05-standard-floe/](05-standard-floe/README.md) | Floe 단계 문서 22개(`code/docs/`)와 Floe가 맡겨 만든 프로그램(`code/`), 가짜 데이터로 돌린 결과(`sample-run/`) |
+| [estimate/](estimate/README.md) | 토큰 예측 · 추정 — 사람이 웹 앱까지 갈 때(잰 값 아님) |
 
 ## 다시 돌리기
 
